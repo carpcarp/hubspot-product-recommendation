@@ -1,0 +1,108 @@
+<!-- Set Contact -->
+{% set contact = crm_object("contact", 11751, "firstname,product_browse_history,products_bought") %}
+
+<!-- Parse Rec Properties -->
+<h2>Contact Recommendation Properties</h2>
+<p>Contact Name: {{ contact.firstname }}</p>
+<p>Contact Browsing History SKUs: {{ contact.product_browse_history }}</p>
+<p>Contact Products Bought SKUs: {{ contact.products_bought }}</p>
+
+<!-- Enriched Rec Properties -->
+{% set contact = crm_object("contact", 11701, "firstname,product_browse_history,products_bought") %}
+
+<!-- Fetching Products -->
+{% set product_browse_history_array = crm_objects("product", "hs_sku__in="~contact.product_browse_history, "accessories,similar_items,hs_sku,hs_images,name,price") %} 
+{% set products_bought_array = crm_objects("product", "hs_sku__in="~contact.products_bought, "accessories,similar_items,hs_sku,hs_images,name,price") %} 
+
+<hr>
+
+<h2>Fetching Products From Contact</h2>
+
+<h3>Browse History:</h3>
+{% for product in product_browse_history_array %}
+  
+  <p>Name: {{product.results[0].name}}</p>
+  <p>Price: {{product.results[0].price}}</p>
+  <p>SKU: {{product.results[0].hs_sku}}</p>
+  <img src="{{product.results[0].hs_images}}" alt="" width="100" height="100">
+
+  {% set accessories_array = crm_objects("product", "hs_sku__in="~product.results[0].accessories, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
+  <p><b>Products Frequently bought with {{product.results[0].name}}</b></p>
+  <table width="1000" border="0" align="center" cellpadding="0" cellspacing="0" class=”width300”>
+  <tr>
+    {% for product in accessories_array %}
+    <td width="120" align="left" valign="top" class=”width300 block”>
+      <p>{{product.name}}</p>
+      <p>
+        <img src="{{product.hs_images}}" alt="" width="100" height="100">
+      </p>
+    </td>
+    {% endfor %}  
+  </tr>  
+  </table>
+  <br>
+  {% set similar_items_array = crm_objects("product", "hs_sku__in="~product.results[0].similar_items, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
+  <p><b>Products Similar to {{product.results[0].name}}</b></p>
+  <table width="1000" border="0" align="center" cellpadding="0" cellspacing="0" class=”width300”>
+  <tr>
+    {% for product in similar_items_array %}
+    <td width="120" align="left" valign="top" class=”width300 block”>
+      <p>{{product.name}}</p>
+      <p><img src="{{product.hs_images}}" alt="" width="80" height="80"></p>
+    </td>
+    {% endfor %} 
+  </tr>  
+  </table>
+
+{% endfor %}
+<hr>
+
+<h3>Products Bought</h3>
+{% for product in products_bought_array %}
+  <p>Name: {{product.results[0].name}}</p>
+  <p>Price: {{product.results[0].price}}</p>
+  <p>SKU: {{product.results[0].hs_sku}}</p>
+  <img src="{{product.results[0].hs_images}}" alt="Girl in a jacket" width="100" height="100">
+
+  {% set accessories_array = crm_objects("product", "hs_sku__in="~product.results[0].accessories, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
+  <p><b>Products Frequently bought with {{product.results[0].name}}</b></p>
+
+  <table width="1000" border="0" align="center" cellpadding="0" cellspacing="0" class=”width300”>
+  <tr>
+    {% for product in accessories_array %}
+    <td width="120" align="left" valign="top" class=”width300 block”>
+      <p>{{product.name}}</p>
+      <p><img src="{{product.hs_images}}" alt="" width="80" height="80"></p>
+    </td>
+    {% endfor %} 
+  </tr>  
+  </table>
+
+  <br>
+  {% set similar_items_array = crm_objects("product", "hs_sku__in="~product.results[0].similar_items, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
+  <p><b>Products Similar to {{product.results[0].name}}</b></p>
+  <table width="1000" border="0" align="center" cellpadding="0" cellspacing="0" class=”width300”>
+  <tr>
+    {% for product in similar_items_array %}
+    <td width="120" align="left" valign="top" class=”width300 block”>
+      <p>{{product.name}}</p>
+      <p><img src="{{product.hs_images}}" alt="" width="80" height="80"></p>
+    </td>
+    {% endfor %} 
+  </tr>  
+  </table>
+  <hr>
+
+{% endfor %}
+
+
+
+<!-- .
+accessories
+similar_items
+hs_sku
+hs_images
+name
+price
+hs_object_id
+. -->
