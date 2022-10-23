@@ -18,18 +18,19 @@
 <h3>Contact Browse History:</h3>
 <table width="1200" border="0" align="center" cellpadding="0" cellspacing="0">
   {% for product in product_browse_history_array %}
+    <!-- Fetching nested recommended products from returned product record -->
     {% set accessories_array = crm_objects("product", "hs_sku__in="~product.accessories, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
     {% set similar_items_array = crm_objects("product", "hs_sku__in="~product.similar_items, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
       <tr>
-        <td width="150" align="left" valign="top" class=”width300 block”>
+        <td width="150" align="left" valign="top">
           <p><b>Name:</b> {{product.name}}</p>
           <img src="{{product.hs_images}}" alt="" width="100" height="100">
           <p><b>Price:</b> {{product.price}}</p>
           <p><b>SKU:</b> {{product.hs_sku}}</p>
         </td>
-        <td width="20" align="left" valign="top" class=”width300 block”>
+        <td width="20" align="left" valign="top">
         </td>
-        <td width="300" align="left" valign="top" class=”width300 block”>
+        <td width="300" align="left" valign="top">
           <p><b>Products Frequently bought with:</b> {{product.name}}</p>
           {% for product in accessories_array %}
             <p>{{product.name}}</p>
@@ -38,7 +39,7 @@
             </p>
           {% endfor %}  
         </td>
-        <td width="300" align="left" valign="top" class=”width300 block”>
+        <td width="300" align="left" valign="top">
           <p><b>Products Similar to:</b> {{product.name}}</p>
           {% for product in similar_items_array %}
             <p>{{product.name}}</p>
@@ -57,15 +58,15 @@
     {% set accessories_array = crm_objects("product", "hs_sku__in="~product.accessories, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
     {% set similar_items_array = crm_objects("product", "hs_sku__in="~product.similar_items, "accessories,similar_items,hs_sku,hs_images,name,price").results %} 
       <tr>
-        <td width="150" align="left" valign="top" class=”width300 block”>
+        <td width="150" align="left" valign="top">
           <p><b>Name:</b> {{product.name}}</p>
           <img src="{{product.hs_images}}" alt="" width="100" height="100">
           <p><b>Price:</b> {{product.price}}</p>
           <p><b>SKU:</b> {{product.hs_sku}}</p>
         </td>
-        <td width="20" align="left" valign="top" class=”width300 block”>
+        <td width="20" align="left" valign="top" >
         </td>
-        <td width="300" align="left" valign="top" class=”width300 block”>
+        <td width="300" align="left" valign="top">
           <p><b>Products Frequently bought with:</b> {{product.name}}</p>
           {% for product in accessories_array %}
             <p>{{product.name}}</p>
@@ -74,7 +75,7 @@
             </p>
           {% endfor %}  
         </td>
-        <td width="300" align="left" valign="top" class=”width300 block”>
+        <td width="300" align="left" valign="top">
           <p><b>Products Similar to:</b> {{product.name}}</p>
           {% for product in similar_items_array %}
             <p>{{product.name}}</p>
